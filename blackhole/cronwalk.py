@@ -98,7 +98,8 @@ class cronwalk(object):
             if cur.year - self.last_fit_year >= 2:
                 raise Exception('invalid expr')
 
-            fields = ('month', 'day', 'isoweekday', 'hour', 'minute')
+            # fields = ('month', 'day', 'isoweekday', 'hour', 'minute')
+            fields = ('month', 'day', 'hour', 'minute')
 
             for field in fields:
                 if field in ['day', 'isoweekday']:  # day and isoweekday is union-like relative
@@ -106,8 +107,6 @@ class cronwalk(object):
                 else:
                     _diff = self.get_diff(getattr(cur, field), getattr(entry, field), field)
 
-                if field == "isoweekday":
-                    pass
                 if _diff:
                     old = cur.clone()
                     cur = cur.shifted(**{field: _diff})

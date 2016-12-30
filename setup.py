@@ -220,7 +220,7 @@ Changelog
 * Initial release
 """
 
-setup(name="blackhole",
+setup(name="black-hole",
       version=version,
       description="一个增强时间管理库",
       long_description=long_description,
