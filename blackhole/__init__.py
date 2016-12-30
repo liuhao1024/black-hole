@@ -21,7 +21,7 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 OR OTHER DEALINGS IN THE SOFTWARE."""
 
 __title__ = 'blackhole'
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = 'liuhao1024'
 __license__ = 'MIT License'
 __copyright__ = 'Copyright (c) 2016 liuhao1024'
