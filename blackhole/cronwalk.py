@@ -95,7 +95,6 @@ class cronwalk(object):
         cur = self.cur
         entry = self.entry
         while 1:
-            # print '开始 : ', cur, self.last_fit_year
             if cur.year - self.last_fit_year >= 2:
                 raise Exception('invalid expr')
 
@@ -135,20 +134,16 @@ class cronwalk(object):
                 cur = cur.shifted(**{'minute': 1})
 
     def get_diff(self, x, seq, unit):
-        # 如果没有seq,返回正无穷
         if not seq:
             return float('inf')
 
-        # 在seq序列中,找到比y大,并且距离y最近的值
-        # print unit, x, seq
         temp = seq[0]
         for y in seq:
             if y > x:
-                # print '结果', y, x, y - x
                 seq = seq[1:]
                 seq.append(temp)
                 return y - x
-        # 如果找不到,就找x与时间节点的差值,比如minute, x = 9, minute最大值是60, 返回差值51
+
         range_len = self.range_len[unit]
         _diff = (seq[0] - x) % range_len
         return _diff
