@@ -1,10 +1,9 @@
 # coding=utf-8
 
-__all__ = ['cronwalk']
-
-# from itertools import islice
 import re
 from blackhole import ben
+
+__all__ = ['cronwalk']
 
 
 class Entry(object):
@@ -89,7 +88,6 @@ class cronwalk(object):
         else:
             if not self.has_day:
                 self.entry.day = []
-        print self.entry
 
     def __iter__(self):
         cur = self.cur
@@ -138,7 +136,7 @@ class cronwalk(object):
 
         temp = seq[0]
         for y in seq:
-            if y > x:
+            if y >= x:
                 seq = seq[1:]
                 seq.append(temp)
                 return y - x

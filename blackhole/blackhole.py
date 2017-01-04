@@ -12,7 +12,7 @@ __all__ = ['Blackhole', 'ben']
 
 @total_ordering
 class Blackhole(object):
-    """The core object.Enhence the datetime.datetime.
+    """核心对象,增强版本的datetime.datetime对象
     """
     mock_offset = {}
     _units = ['year', 'month', 'day', 'hour', 'minute', 'second', 'microsecond']
@@ -26,7 +26,7 @@ class Blackhole(object):
     @classmethod
     def mock(cls, **kwargs):
         """
-        fake current time,don't need to change OS time,it is helpful for test
+        获取一个假的当前时间
         """
         cls.mock_offset = kwargs
 
@@ -64,7 +64,7 @@ class Blackhole(object):
 
     def shift(self, **kwargs):
         """
-        in place
+        返回一个修改后对象
         :param kwargs:
         :return:
         """
@@ -76,7 +76,7 @@ class Blackhole(object):
 
     def shifted(self, **kwargs):
         """
-        return new object
+        返回一个新的修改后对象
         :param kwargs:
         :return:
         """
@@ -94,108 +94,96 @@ class Blackhole(object):
             raise AttributeError()
         return self.floor(unit).shifted(**{unit: 1, 'microsecond': -1})
 
-    def round(self, factor):
-        ''' factor is seconds want round to,such as 30*60'''
-        seconds = (self._dt - self._dt.min).seconds
-        rounding = int((seconds + factor / 2.0)) / factor * factor
-        return self.shifted(seconds=rounding - seconds, microseconds=-self._dt.microsecond)
-
-    def roundfloor(self, factor):
-        ''' factor is seconds want round to,such as 30*60'''
-        seconds = (self._dt - self._dt.min).seconds
-        rounding = seconds / factor * factor
-        return self.shifted(seconds=rounding - seconds, microseconds=-self._dt.microsecond)
-
     # Access
-    def _get_date(self):
+    @property
+    def date(self):
         return self._dt.date()
 
-    def _set_date(self, value):
+    @date.setter
+    def date(self, value):
         self._dt = datetime.combine(value, self._dt.time())
 
-    date = property(_get_date, _set_date)
-
-    def _get_time(self):
+    @property
+    def time(self):
         return self._dt.time()
 
-    def _set_time(self, value):
+    @time.setter
+    def time(self, value):
         self._dt = datetime.combine(self._dt.date(), value)
 
-    time = property(_get_time, _set_time)
-
-    def _get_tuple(self):
+    @property
+    def tuple(self):
         return self._dt.timetuple()
 
-    def _set_tuple(self, value):
+    @tuple.setter
+    def tuple(self, value):
         self._dt = self._dt.fromtimestamp(int(time.mktime(value)))
 
-    tuple = property(_get_tuple, _set_tuple)
-
-    def _get_year(self):
+    @property
+    def year(self):
         return self._dt.year
 
-    def _set_year(self, value):
+    @year.setter
+    def year(self, value):
         self._dt = self._dt.replace(year=value)
 
-    year = property(_get_year, _set_year)
-
-    def _get_month(self):
+    @property
+    def month(self):
         return self._dt.month
 
-    def _set_month(self, value):
+    @month.setter
+    def month(self, value):
         self._dt += relativedelta(months=value - self._dt.month)
 
-    month = property(_get_month, _set_month)
-
-    def _get_week(self):
+    @property
+    def week(self):
         delta = self._dt - datetime(self._dt.year, 1, 1)
         return delta.days / 7
 
-    def _set_week(self, value):
+    @month.setter
+    def week(self, value):
         week = self._get_week()
         self._dt += timedelta(weeks=value - week)
 
-    week = property(_get_week, _set_week)
-
-    def _get_day(self):
+    @property
+    def day(self):
         return self._dt.day
 
-    def _set_day(self, value):
+    @day.setter
+    def day(self, value):
         self._dt += timedelta(days=value - self._dt.day)
 
-    day = property(_get_day, _set_day)
-
-    def _get_hour(self):
+    @property
+    def hour(self):
         return self._dt.hour
 
-    def _set_hour(self, value):
+    @hour.setter
+    def hour(self, value):
         self._dt += timedelta(hours=value - self._dt.hour)
 
-    hour = property(_get_hour, _set_hour)
-
-    def _get_minute(self):
+    @property
+    def minute(self):
         return self._dt.minute
 
-    def _set_minute(self, value):
+    @minute.setter
+    def minute(self, value):
         self._dt += timedelta(minutes=value - self._dt.minute)
 
-    minute = property(_get_minute, _set_minute)
-
-    def _get_second(self):
+    @property
+    def second(self):
         return self._dt.second
 
-    def _set_second(self, value):
+    @second.setter
+    def second(self, value):
         self._dt += timedelta(seconds=value - self._dt.second)
 
-    second = property(_get_second, _set_second)
-
-    def _get_microsecond(self):
+    @property
+    def microsecond(self):
         return self._dt.microsecond
 
-    def _set_microsecond(self, value):
+    @microsecond.setter
+    def microsecond(self, value):
         self._dt += timedelta(microseconds=value - self._dt.microsecond)
-
-    microsecond = property(_get_microsecond, _set_microsecond)
 
     @property
     def weekday(self):
@@ -256,7 +244,7 @@ class Blackhole(object):
     @property
     def sqldate(self):
         """
-        返回时间的年月日,格式:'2016-08-29'
+        返回时间的年月日,格式: '2016-08-29'
         :return:
         """
         return self._dt.strftime("%Y-%m-%d")
@@ -264,7 +252,7 @@ class Blackhole(object):
     @property
     def sqltime(self):
         """
-        返回时间的时分秒,格式:'23:26:25'
+        返回时间的时分秒,格式: '23:26:25'
         :return:
         """
         return self._dt.strftime("%H:%M:%S")
@@ -272,7 +260,7 @@ class Blackhole(object):
     @property
     def sql(self):
         """
-        返回sql格式的年月日时分秒,格式:'2016-08-29 23:26:25'
+        返回sql格式的年月日时分秒,格式: '2016-08-29 23:26:25'
         :return:
         """
         return '{0} {1}'.format(self.sqldate, self.sqltime)
@@ -315,13 +303,17 @@ class Blackhole(object):
 
     # comparisons
     def __eq__(self, other):
-        if not isinstance(other, Blackhole):
+        if not isinstance(other, (Blackhole, datetime)):
             return False
+        if isinstance(other, datetime):
+            other = ben(other)
         return self._dt == other._dt
 
     def __lt__(self, other):
-        if not isinstance(other, Blackhole):
+        if not isinstance(other, (Blackhole, datetime)):
             return False
+        if isinstance(other, datetime):
+            other = ben(other)
         return self._dt < other._dt
 
     # representation
@@ -342,8 +334,8 @@ def ben(*args, **kwargs):
         > ben(timestr)
         > ben(datetime)
         > ben(Blackhole)
-        > ben('2013-01-01', '%Y-%m-%d')
-        > ben(year=2013, month=2, day=8, hour=7)
+        > ben('2016-01-01', '%Y-%m-%d')
+        > ben(year=2016, month=1, day=1, hour=20)
     """
     if kwargs:
         return Blackhole(*args, **kwargs)

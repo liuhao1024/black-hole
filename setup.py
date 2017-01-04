@@ -2,7 +2,7 @@
 
 from setuptools import setup, find_packages
 
-version = '0.0.2'
+version = '0.0.3'
 
 long_description = """
 ================
@@ -71,48 +71,48 @@ black-hole
 
 **Blackhole对象** ，通过这个对象，可以方便的获取各个时间属性和操作::
 
-    >> sg = ben('2013,1,1 13:14:15')
-    >> sg
+    >> bh = ben('2013,1,1 13:14:15')
+    >> bh
     <blackhole object (2013-01-01 13:14:15)>
-    >> sg.year,sg.month,sg.day,sg.hour,sg.minute,sg.second,sg.microsecond
+    >> bh.year,bh.month,bh.day,bh.hour,bh.minute,bh.second,bh.microsecond
     (2013, 1, 1, 13, 14, 15, 0)
-    >> sg.timestamp#还能直接获取timestamp
+    >> bh.timestamp#还能直接获取timestamp
     1357017255.0
 
     #便捷的获取常用的sql格式
-    >> sg.sql
+    >> bh.sql
     '2013-01-01 13:14:15'
-    >> sg.sqldate
+    >> bh.sqldate
     '2013-01-01'
-    >> sg.sqltime
+    >> bh.sqltime
     '13:14:15'
 
     #进行增量变换(shift是原地操作，而shifted返回一个新的对象)
-    >> sg.shifted(day=1,minute=-2)
+    >> bh.shifted(day=1,minute=-2)
     <blackhole object (2013-01-02 13:12:15)>
-    >> sg.hour=23
-    >> sg
+    >> bh.hour=23
+    >> bh
     <blackhole object (2013-01-01 23:14:15)>
 
-    >> sg.floor('hour'),sg.ceil('hour')
+    >> bh.floor('hour'),bh.ceil('hour')
     (<blackhole object (2013-01-01 23:00:00)>, <blackhole object (2013-01-01 23:59:59.999999)>)
-    >> sg.floor('year'),sg.ceil('year')
+    >> bh.floor('year'),bh.ceil('year')
     (<blackhole object (2013-01-01 00:00:00)>, <blackhole object (2013-12-31 23:59:59.999999)>)
-    >> sg.round(30*60)
+    >> bh.round(30*60)
     <blackhole object (2013-01-01 23:00:00)>
-    >> sg.roundfloor(30*60)
+    >> bh.roundfloor(30*60)
     <blackhole object (2013-01-01 23:00:00)>
 
     #重载符号
-    >> sg3 = blackhole(year=2013,month=2,day=27,hour=0)
-    >> sg4 = blackhole(year=2013,month=3,day=1,hour=0)
-    >> sg3==sg4
+    >> bh3 = blackhole(year=2013,month=2,day=27,hour=0)
+    >> bh4 = blackhole(year=2013,month=3,day=1,hour=0)
+    >> bh3==bh4
     False
-    >> sg3<sg4
+    >> bh3<bh4
     True
-    >> sg3>sg4
+    >> bh3>bh4
     False
-    >> sg4-sg3
+    >> bh4-bh3
     datetime.timedelta(2)
 
     #mock当前时间，这样就测试的时候就不用改时间，直接mock给当前时间加上个偏移量就行了
@@ -129,24 +129,24 @@ black-hole
     <blackhole object (2014-05-06 12:05:19.003000)>
 
     #其它
-    >> sg
+    >> bh
     <blackhole object (2013-01-01 23:14:15)>
-    >> sg.raw()
+    >> bh.raw()
     datetime.datetime(2013, 1, 1, 23, 14, 15)
-    >> sg.clone()
+    >> bh.clone()
     <blackhole object (2013-01-01 23:14:15)>
-    >> sg.replace(day=2)
-    >> sg
+    >> bh.replace(day=2)
+    >> bh
     <blackhole object (2013-01-02 23:14:15)>
-    >> sg.days_in_month
+    >> bh.days_in_month
     31
-    >> sg.is_today()
+    >> bh.is_today()
     False
-    >> sg.is_past_date()
+    >> bh.is_past_date()
     True
-    >> sg.is_future_date()
+    >> bh.is_future_date()
     False
-    >> sg.strftime('%Y/%m/%d')
+    >> bh.strftime('%Y/%m/%d')
     '2013/01/02'
     >> blackhole.strptime('20130203','%Y%m%d')
     <blackhole object (2013-02-03 00:00:00)>
@@ -215,7 +215,7 @@ black-hole
 
 Changelog
 ---------
-**0.0.2**
+**0.0.3**
 
 * Initial release
 """
